@@ -1,5 +1,4 @@
 FROM debian:stable
-MAINTAINER aquilax "aquilax@gmail.com"
 
 # Tell debconf to run in non-interactive mode
 ENV DEBIAN_FRONTEND noninteractive
@@ -8,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 
 # We need ssh to access the docker container, wget to download viber
-RUN apt-get install -y openssh-server wget mesa-utils libxrender1 libxcomposite1 libxslt1.1 libgstreamer0.10-0 libgstreamer-plugins-base0.10-0 sqlite3
+RUN apt-get install -y openssh-server wget
 
 RUN wget http://download.cdn.viber.com/cdn/desktop/Linux/viber.deb -O /usr/src/viber.deb
 RUN dpkg -i /usr/src/viber.deb || true
@@ -29,13 +28,12 @@ RUN chown -R docker:docker /home/docker/.ssh
 
 # Set locale (fix locale warnings)
 RUN localedef -v -c -i en_US -f UTF-8 en_US.UTF-8 || true
-RUN echo "Europe/Prague" > /etc/timezone
+RUN echo "Europe/Stockholm" > /etc/timezone
 
 # Set up the launch wrapper - sets up PulseAudio to work correctly
 RUN echo 'export PULSE_SERVER="tcp:localhost:64713"' >> /usr/local/bin/viber-pulseaudio
 RUN echo 'PULSE_LATENCY_MSEC=60 /opt/viber/Viber' >> /usr/local/bin/viber-pulseaudio
 RUN chmod 755 /usr/local/bin/viber-pulseaudio
-
 
 # Expose the SSH port
 EXPOSE 22
