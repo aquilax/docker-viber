@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 
 # We need ssh to access the docker container, wget to download viber
-RUN apt-get install -y openssh-server wget
+RUN apt-get install -y openssh-server wget libxss1 libxrandr2 libxi6 libxslt1.1
 
 RUN wget http://download.cdn.viber.com/cdn/desktop/Linux/viber.deb -O /usr/src/viber.deb
 RUN dpkg -i /usr/src/viber.deb || true
